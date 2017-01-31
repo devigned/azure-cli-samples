@@ -5,7 +5,7 @@ set -e
 RESOURCE_GROUP='php-stack'
 LOCATION='westus'
 SCALE_SET_NAME='phpScaleSet'
-RANDOM_NUM=$(python -S -c "import random; print random.randrange(1000,63000)")
+RANDOM_NUM=$(python -S -c "import random; print(random.randrange(1000,63000))")
 
 # Read in the public key
 if [ -r ~/.ssh/id_rsa.pub ]; then
