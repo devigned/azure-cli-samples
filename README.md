@@ -9,9 +9,10 @@ create an issue explaining the goals of the script. I'll try to get to your requ
 
 ## Samples
 - Scale Sets
-  - [PHP app tier provisioned with Ansible](./scaleset-php-ansible/README.md)
+  - [PHP app tier provisioned with Ansible](./scaleset-php-ansible/README.md): build a scale set and deploy out some PHP bits
 - Virtual Machines
-  - [Create VM from Custom VHD](./vm-custom-vhd/README.md)
+  - [Create VM from custom VHD](./vm-custom-vhd/README.md): upload VHD and create VM from VHD
+  - [Restart by tag and async VM creation](./vm-restart-by-tag/README.md): build multiple VMs across groups async and restart them by tag
   
   
 ## Contributing
