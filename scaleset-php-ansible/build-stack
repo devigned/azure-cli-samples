@@ -21,12 +21,8 @@ fi
 
 
 # Create the resource group if it doesn't exist
-if [ -z $(az group exists -n ${RESOURCE_GROUP}) ]; then
-    echo "Creating resource group ${RESOURCE_GROUP} in ${LOCATION}"
-    az group create -n ${RESOURCE_GROUP} -l ${LOCATION} 1>/dev/null
-else
-    echo "Resource Group ${RESOURCE_GROUP} already exists"
-fi
+echo "Creating resource group ${RESOURCE_GROUP} in ${LOCATION}"
+az group create -n ${RESOURCE_GROUP} -l ${LOCATION} 1>/dev/null
 
 
 # Build the Scale Set

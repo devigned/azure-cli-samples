@@ -19,13 +19,8 @@ fi
 
 
 # Create the resource group if it doesn't exist
-if [[ $(az group exists -n ${RESOURCE_GROUP}) == 'false' ]]; then
-    echo "Creating resource group ${RESOURCE_GROUP} in ${LOCATION}"
-    az group create -n ${RESOURCE_GROUP} -l ${LOCATION} 1>/dev/null
-else
-    echo "Resource Group ${RESOURCE_GROUP} already exists"
-fi
-
+echo "Creating resource group ${RESOURCE_GROUP} in ${LOCATION}"
+az group create -n ${RESOURCE_GROUP} -l ${LOCATION} 1>/dev/null
 
 # Create the storage account to upload the custom vhd. If the storage provider has not been registered, run:
 # `az provider register --namespace "Microsoft.Storage"`

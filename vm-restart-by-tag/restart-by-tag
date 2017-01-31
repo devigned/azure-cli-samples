@@ -21,12 +21,8 @@ fi
 
 for group in ${RESOURCE_GROUPS[@]}; do
     # Create the resource group if it doesn't exist
-    if [[ $(az group exists -n ${group}) == 'false' ]]; then
-        echo "Creating resource group ${group} in ${LOCATION}"
-        az group create -n ${group} -l ${LOCATION} 1>/dev/null
-    else
-        echo "Resource Group ${group} already exists"
-    fi
+    echo "Creating resource group ${group} in ${LOCATION}"
+    az group create -n ${group} -l ${LOCATION} 1>/dev/null
 
     echo "Deploying vm named ${group}-vm in ${group} with no waiting"
     az vm create -g ${group} -n "${group}-vm" --image UbuntuLTS --admin-username deploy --tags ${DEFAULT_TAG} --no-wait $1>/dev/null
