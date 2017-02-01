@@ -30,20 +30,20 @@ VMSS_NAME=$(az vmss list -g ${RESOURCE_GROUP} --query "[?name=='${SCALE_SET_NAME
 if [ -z ${VMSS_NAME} ]; then
     echo "Creating a virtual machine scale set with a randomized DNS name"
     az vmss create -n ${SCALE_SET_NAME} -g ${RESOURCE_GROUP} --public-ip-address-dns-name "lamp-sample-$RANDOM_NUM" \
-        --image CentOS --storage-type Premium_LRS --authentication-type ssh --ssh-key-value "${SSH_PUB_KEY}" \
-        --admin-username deploy --vm-sku Standard_DS3_v2
+        --image CentOS --storage-sku Premium_LRS --authentication-type ssh --ssh-key-value "${SSH_PUB_KEY}" \
+        --admin-username deploy --vm-sku Standard_DS3_v2 1>/dev/null
 else
     echo "Virtual machine scale set has already been created"
 fi
 
 
 # Add a load balanced endpoint on port 80 routed to the backend servers on port 80
-HTTP_RULE_NAME=$(az network lb rule list -g ${RESOURCE_GROUP} --lb-name ${SCALE_SET_NAME}lb \
+HTTP_RULE_NAME=$(az network lb rule list -g ${RESOURCE_GROUP} --lb-name ${SCALE_SET_NAME}LB \
     --query "[?name=='http-rule'].name | [0]" -o tsv)
 if [ -z ${HTTP_RULE_NAME} ]; then
     echo "Creating a load balanced endpoint on port 80 routed to the backend servers on port 80"
-    az network lb rule create -g ${RESOURCE_GROUP} -n http-rule --backend-pool-name ${SCALE_SET_NAME}bepool \
-        --backend-port 80 --frontend-ip-name LoadBalancerFrontEnd --frontend-port 80 --lb-name ${SCALE_SET_NAME}lb \
+    az network lb rule create -g ${RESOURCE_GROUP} -n http-rule --backend-pool-name ${SCALE_SET_NAME}LBBEPool \
+        --backend-port 80 --frontend-ip-name LoadBalancerFrontEnd --frontend-port 80 --lb-name ${SCALE_SET_NAME}LB \
         --protocol Tcp 1>/dev/null
 else
     echo "Load balanced endpoint on port 80 has already been created"
@@ -57,7 +57,7 @@ echo ""
 echo "Two virutal machine instances within the scale set have been created with a network load balancer."
 echo "NAT rules have been setup to route SSH traffic to the scale set instances."
 echo "To SSH to the machines run the following: "
-PORTS=$(az network lb show -g ${RESOURCE_GROUP} -n ${SCALE_SET_NAME}lb \
+PORTS=$(az network lb show -g ${RESOURCE_GROUP} -n ${SCALE_SET_NAME}LB \
     --query "inboundNatRules[].{backend: backendPort, frontendPort: frontendPort}" -o tsv)
 while read CMD; do
     read _ frontend <<< "${CMD}"
@@ -91,7 +91,7 @@ echo ""
 echo "Five virtual machine instances within the scale set have been created with a network load balancer."
 echo "NAT rules have been setup to route SSH traffic to the scale set instances."
 echo "To SSH to the machines run the following: "
-PORTS=$(az network lb show -g ${RESOURCE_GROUP} -n ${SCALE_SET_NAME}lb \
+PORTS=$(az network lb show -g ${RESOURCE_GROUP} -n ${SCALE_SET_NAME}LB \
     --query "inboundNatRules[].{backend: backendPort, frontendPort: frontendPort}" -o tsv)
 while read CMD; do
     read _ frontend <<< "${CMD}"
