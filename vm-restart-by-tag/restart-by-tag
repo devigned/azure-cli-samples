@@ -7,18 +7,6 @@ TAG=${1:-$DEFAULT_TAG}
 
 RESOURCE_GROUPS=('GROUP1' 'GROUP2' 'GROUP3')
 
-# Read in the public key
-if [[ -r ~/.ssh/id_rsa.pub ]]; then
-    SSH_PUB_KEY=$(cat ~/.ssh/id_rsa.pub)
-else
-    read -e -p "I couldn't find ~/.ssh/id_rsa.pub. Please provide a path to your public key: " FILE_PATH
-    eval FILE_PATH=${FILE_PATH}
-    while [ ! -e ${FILE_PATH} ]; do
-        read -e -p "I couldn't find $FILE_PATH. Please provide a path to your public key: " FILE_PATH
-    done
-    SSH_PUB_KEY=`cat ${FILE_PATH}`
-fi
-
 for group in ${RESOURCE_GROUPS[@]}; do
     # Create the resource group if it doesn't exist
     echo "Creating resource group ${group} in ${LOCATION}"
