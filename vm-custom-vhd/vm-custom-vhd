@@ -68,7 +68,7 @@ else
     # Create the vm from the custom image
     echo "Creating a virtual machine from the custom vhd"
     az vm create -g ${RESOURCE_GROUP} -n custom-vm --image "https://${STORAGE_NAME}.blob.core.windows.net/vhds/sample.vhd" \
-        --os-type linux --admin-username deploy 1>/dev/null
+        --os-type linux --admin-username deploy --use-unmanaged-disk 1>/dev/null
 fi
 
 
