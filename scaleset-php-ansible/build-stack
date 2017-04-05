@@ -75,7 +75,8 @@ echo "This configuration contains commands to be executed upon provisioning of i
 echo "hooking into configuration management software or simply provisioning your software stack directly."
 # apply a custom script extension to setup baseline provisioning for the ScaleSet
 az vmss extension set -n CustomScript --publisher Microsoft.Azure.Extensions --version 2.0 \
-   -g ${RESOURCE_GROUP} --vmss-name ${SCALE_SET_NAME} --protected-settings ./protected_config.json 1>/dev/null
+   -g ${RESOURCE_GROUP} --vmss-name ${SCALE_SET_NAME} --protected-settings \
+   ./protected_config.json --no-auto-upgrade 1>/dev/null
 
 echo ""
 echo "Now that the custom script extension has been created, this command will cause each instance of the"
